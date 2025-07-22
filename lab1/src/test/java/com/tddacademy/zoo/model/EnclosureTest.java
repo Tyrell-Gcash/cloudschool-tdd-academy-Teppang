@@ -92,6 +92,19 @@ class EnclosureTest {
         //     () -> new Enclosure(id, name, type, area, climate, animals)
         // );
         // assertEquals("Enclosure type cannot be null or empty", exception.getMessage());
+
+        Long id = 1L;
+        String name = "Enclosure name";
+        String type = null;
+        Double area = 5000.0;
+        String climate = "Tropical";
+        List<Animal> animals = new ArrayList<>();
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Enclosure(id, name, type, area, climate, animals)
+        );
+        assertEquals("Enclosure type cannot be null or empty", exception.getMessage());
     }
 
     @Test
@@ -115,6 +128,19 @@ class EnclosureTest {
         //     () -> new Enclosure(id, name, type, area, climate, animals)
         // );
         // assertEquals("Enclosure area must be positive", exception.getMessage());
+
+        Long id = 1L;
+        String name = "Enclosure name";
+        String type = "Enclosure Type";
+        Double area = -5000.0;
+        String climate = "Tropical";
+        List<Animal> animals = new ArrayList<>();
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Enclosure(id, name, type, area, climate, animals)
+        );
+        assertEquals("Enclosure area must be positive", exception.getMessage());
     }
 
     @Test
