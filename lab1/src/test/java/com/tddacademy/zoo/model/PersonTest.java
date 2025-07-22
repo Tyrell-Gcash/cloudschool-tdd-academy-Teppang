@@ -157,6 +157,20 @@ class PersonTest {
         //     () -> new Person(id, firstName, lastName, role, email, hireDate, salary)
         // );
         // assertEquals("Person role cannot be null or empty", exception.getMessage());
+
+        Long id = 1L;
+        String firstName = "John";
+        String lastName = "Doe";
+        String role = null;
+        String email = "john.doe@zoo.com";
+        LocalDate hireDate = LocalDate.of(2023, 1, 15);
+        Double salary = 45000.0;
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Person(id, firstName, lastName, role, email, hireDate, salary)
+        );
+        assertEquals("Person role cannot be null or empty", exception.getMessage());
     }
 
     @Test
@@ -221,5 +235,19 @@ class PersonTest {
         //     () -> new Person(id, firstName, lastName, role, email, hireDate, salary)
         // );
         // assertEquals("Person salary must be positive", exception.getMessage());
+
+        Long id = 1L;
+        String firstName = "John";
+        String lastName = "Doe";
+        String role = "Zookeeper";
+        String email = "john.doe@zoo.com";
+        LocalDate hireDate = LocalDate.of(2023, 1, 15);
+        Double salary = 0.0;
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Person(id, firstName, lastName, role, email, hireDate, salary)
+        );
+        assertEquals("Person salary must be positive", exception.getMessage());
     }
 } 
