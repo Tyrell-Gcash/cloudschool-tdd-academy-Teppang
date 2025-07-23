@@ -122,6 +122,18 @@ class ZooServiceTest {
         //
         // assertEquals("Updated Manila Zoo", result.getName());
         // verify(zooRepository, times(1)).save(any(Zoo.class));
+
+         Long zooId = 1L;
+         manilaZoo.setId(zooId);
+         Zoo updatedZoo = new Zoo("Updated Manila Zoo", "Updated Location", "Updated description");
+
+         when(zooRepository.findById(zooId)).thenReturn(Optional.of(manilaZoo));
+         when(zooRepository.save(any(Zoo.class))).thenReturn(updatedZoo);
+
+         Zoo result = zooService.updateZoo(zooId, updatedZoo);
+
+         assertEquals("Updated Manila Zoo", result.getName());
+         verify(zooRepository, times(1)).save(any(Zoo.class));
     }
 
     @Test
@@ -144,6 +156,17 @@ class ZooServiceTest {
         //     () -> zooService.updateZoo(zooId, updatedZoo)
         // );
         // assertTrue(exception.getMessage().contains("Zoo not found with id: 999"));
+
+         Long zooId = 999L;
+         Zoo updatedZoo = new Zoo("Updated Zoo", "Updated Location", "Updated description");
+
+         when(zooRepository.findById(zooId)).thenReturn(Optional.empty());
+
+         IllegalArgumentException exception = assertThrows(
+             IllegalArgumentException.class,
+             () -> zooService.updateZoo(zooId, updatedZoo)
+         );
+         assertTrue(exception.getMessage().contains("Zoo not found with id: 999"));
     }
 
     @Test
@@ -161,6 +184,13 @@ class ZooServiceTest {
         // zooService.deleteZoo(zooId);
         //
         // verify(zooRepository, times(1)).deleteById(zooId);
+
+        Long zooId = 1L;
+        when(zooRepository.existsById(zooId)).thenReturn(true);
+
+        zooService.deleteZoo(zooId);
+
+        verify(zooRepository, times(1)).deleteById(zooId);
     }
 
     @Test
@@ -180,6 +210,15 @@ class ZooServiceTest {
         //     () -> zooService.deleteZoo(zooId)
         // );
         // assertTrue(exception.getMessage().contains("Zoo not found with id: 999"));
+
+        Long zooId = 999L;
+        when(zooRepository.existsById(zooId)).thenReturn(false);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> zooService.deleteZoo(zooId)
+        );
+        assertTrue(exception.getMessage().contains("Zoo not found with id: 999"));
     }
 
     @Test
